@@ -23,3 +23,11 @@ class SignInSubmitted extends SignInEvent {
 class TogglePasswordVisibility extends SignInEvent {
   const TogglePasswordVisibility();
 }
+
+class SignInWithGoogleSubmitted extends SignInEvent {
+  const SignInWithGoogleSubmitted();
+}
+
+class SignInWithAppleSubmitted extends SignInEvent {
+  const SignInWithAppleSubmitted();
+}

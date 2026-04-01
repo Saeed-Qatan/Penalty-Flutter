@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'features/auth/presentation/pages/splash_page.dart';
 import 'features/auth/presentation/pages/onboarding_page.dart';
+import 'features/auth/presentation/pages/sign_in_page.dart';
 import 'features/location/presentation/pages/location_permission_page.dart';
 
 final GoRouter appRouter = GoRouter(
@@ -41,20 +42,7 @@ final GoRouter appRouter = GoRouter(
       path: '/login',
       pageBuilder: (context, state) => CustomTransitionPage(
         key: state.pageKey,
-        child: const Scaffold(
-          backgroundColor: Color(0xFF121212),
-          body: Center(
-            child: Text(
-              'Login Page\n(Coming Soon)',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
+        child: const SignInPage(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return FadeTransition(opacity: animation, child: child);
         },

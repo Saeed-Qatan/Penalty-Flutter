@@ -49,6 +49,8 @@ dependencies:
   flutter_native_splash: ^2.4.7
   geolocator: ^14.0.2
   equatable: ^2.0.8
+  google_sign_in: ^7.2.0
+  sign_in_with_apple: ^7.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

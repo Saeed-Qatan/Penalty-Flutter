@@ -1,4 +1,10 @@
 import 'package:get_it/get_it.dart';
+import 'features/auth/data/datasources/auth_remote_data_source.dart';
+import 'features/auth/data/repositories/auth_repository_impl.dart';
+import 'features/auth/domain/repositories/auth_repository.dart';
+import 'features/auth/domain/usecases/sign_in_with_google_usecase.dart';
+import 'features/auth/domain/usecases/sign_in_with_apple_usecase.dart';
+import 'features/auth/presentation/bloc/sign_in_bloc.dart';
 import 'features/location/data/datasources/location_local_data_source.dart';
 import 'features/location/data/repositories/location_repository_impl.dart';
 import 'features/location/domain/repositories/location_repository.dart';
@@ -34,5 +40,29 @@ Future<void> initDependencies() async {
   // Data Sources
   sl.registerLazySingleton<LocationLocalDataSource>(
     () => LocationLocalDataSourceImpl(),
+  );
+
+  // ── Auth Feature ──
+
+  // BLoC
+  sl.registerFactory(
+    () => SignInBloc(
+      signInWithGoogleUseCase: sl(),
+      signInWithAppleUseCase: sl(),
+    ),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton(() => SignInWithGoogleUseCase(sl()));
+  sl.registerLazySingleton(() => SignInWithAppleUseCase(sl()));
+
+  // Repository
+  sl.registerLazySingleton<AuthRepository>(
+    () => AuthRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  // Data Sources
+  sl.registerLazySingleton<AuthRemoteDataSource>(
+    () => AuthRemoteDataSourceImpl(),
   );
 }
