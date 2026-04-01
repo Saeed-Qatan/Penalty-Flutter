@@ -1,0 +1,17 @@
+{
+  "splashTitle": "PLENTY",
+  "splashSubtitle": "Welcome to Plenty",
+  "splashSlogan": "Your perfect destination",
+  "splashLoading": "Loading...",
+  "skip": "Skip",
+  "onboardingTitle1": "Find Your Perfect Pitch",
+  "onboardingSubtitle1": "Thousands of sports pitches across cities — search, filter, and find what suits you",
+  "next": "Next",
+  "allowLocationAccess": "Allow Location Access",
+  "locationSubtitle": "We need your location to provide a better and faster pitch booking experience for you.",
+  "benefitNearest": "Show nearest pitches to you",
+  "benefitDistance": "Accurately determine distance",
+  "benefitNavigation": "Easy navigation to the pitch",
+  "enableLocation": "Enable Location",
+  "notNow": "Not Now"
+}
