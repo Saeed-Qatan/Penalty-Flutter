@@ -1,0 +1,17 @@
+{
+  "splashTitle": "بلنتي",
+  "splashSubtitle": "مرحبا بك في بلنتي",
+  "splashSlogan": "وجهتك المثالية",
+  "splashLoading": "جاري التحميل...",
+  "skip": "تخطي",
+  "onboardingTitle1": "ابحث عن ملعبك المثالي",
+  "onboardingSubtitle1": "آلاف الملاعب الرياضية في مختلف المدن — ابحث، فلتر، واعثر على ما يناسبك",
+  "next": "التالي",
+  "allowLocationAccess": "السماح بالوصول للموقع",
+  "locationSubtitle": "نحتاج إلى موقعك لتقديم تجربة حجز ملاعب أفضل وأسرع لك.",
+  "benefitNearest": "عرض أقرب الملاعب إليك",
+  "benefitDistance": "تحديد المسافة بدقة",
+  "benefitNavigation": "سهولة الوصول إلى الملعب",
+  "enableLocation": "تفعيل الموقع",
+  "notNow": "ليس الآن"
+}
