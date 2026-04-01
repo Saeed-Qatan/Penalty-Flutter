@@ -13,5 +13,14 @@
   "benefitDistance": "تحديد المسافة بدقة",
   "benefitNavigation": "سهولة الوصول إلى الملعب",
   "enableLocation": "تفعيل الموقع",
-  "notNow": "ليس الآن"
+  "notNow": "ليس الآن",
+  "signIn": "تسجيل الدخول",
+  "emailOrPhone": "البريد الإلكتروني أو رقم الهاتف",
+  "password": "كلمة المرور",
+  "forgotPassword": "نسيت كلمة المرور؟",
+  "or": "أو",
+  "continueWithGoogle": "المتابعة عبر جوجل",
+  "continueWithApple": "المتابعة عبر أبل",
+  "dontHaveAccount": "ليس لديك حساب؟",
+  "signUpNow": "سجّل الآن"
 }

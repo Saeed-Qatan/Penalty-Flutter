@@ -14,4 +14,15 @@ class LocaleKeys {
   static const benefitNavigation = 'benefitNavigation';
   static const enableLocation = 'enableLocation';
   static const notNow = 'notNow';
+
+  // Sign In
+  static const signIn = 'signIn';
+  static const emailOrPhone = 'emailOrPhone';
+  static const password = 'password';
+  static const forgotPassword = 'forgotPassword';
+  static const or = 'or';
+  static const continueWithGoogle = 'continueWithGoogle';
+  static const continueWithApple = 'continueWithApple';
+  static const dontHaveAccount = 'dontHaveAccount';
+  static const signUpNow = 'signUpNow';
 }

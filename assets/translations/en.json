@@ -13,5 +13,14 @@
   "benefitDistance": "Accurately determine distance",
   "benefitNavigation": "Easy navigation to the pitch",
   "enableLocation": "Enable Location",
-  "notNow": "Not Now"
+  "notNow": "Not Now",
+  "signIn": "Sign In",
+  "emailOrPhone": "Email or Phone Number",
+  "password": "Password",
+  "forgotPassword": "Forgot Password?",
+  "or": "OR",
+  "continueWithGoogle": "Continue with Google",
+  "continueWithApple": "Continue with Apple",
+  "dontHaveAccount": "Don't have an account?",
+  "signUpNow": "Sign Up Now"
 }
