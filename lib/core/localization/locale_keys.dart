@@ -25,4 +25,27 @@ class LocaleKeys {
   static const continueWithApple = 'continueWithApple';
   static const dontHaveAccount = 'dontHaveAccount';
   static const signUpNow = 'signUpNow';
+  
+  // Sign Up
+  static const createNewAccount = 'createNewAccount';
+  static const firstName = 'firstName';
+  static const middleName = 'middleName';
+  static const lastName = 'lastName';
+  static const email = 'email';
+  static const mobileNumber = 'mobileNumber';
+  static const confirmPassword = 'confirmPassword';
+  static const agreeToTerms = 'agreeToTerms';
+  static const receiveAlerts = 'receiveAlerts';
+  static const createAccount = 'createAccount';
+  static const weak = 'weak';
+  static const medium = 'medium';
+  static const strong = 'strong';
+  static const forgotPasswordTitle = 'forgotPasswordTitle';
+  static const forgotPasswordSubtitle = 'forgotPasswordSubtitle';
+  static const enterDetailsHere = 'enterDetailsHere';
+  static const sendCode = 'sendCode';
+  static const fieldRequired = 'fieldRequired';
+  static const invalidEmailOrPhone = 'invalidEmailOrPhone';
+  static const passwordRecoverySent = 'passwordRecoverySent';
+  static const rememberPasswordSignIn = 'rememberPasswordSignIn';
 }

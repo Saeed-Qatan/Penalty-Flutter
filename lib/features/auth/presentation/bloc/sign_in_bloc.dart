@@ -2,14 +2,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../../domain/usecases/sign_in_with_google_usecase.dart';
 import '../../domain/usecases/sign_in_with_apple_usecase.dart';
+import '../../domain/usecases/sign_in_usecase.dart';
 import 'sign_in_event.dart';
 import 'sign_in_state.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
+  final SignInUseCase signInUseCase;
   final SignInWithGoogleUseCase signInWithGoogleUseCase;
   final SignInWithAppleUseCase signInWithAppleUseCase;
 
   SignInBloc({
+    required this.signInUseCase,
     required this.signInWithGoogleUseCase,
     required this.signInWithAppleUseCase,
   }) : super(const SignInState()) {
@@ -24,8 +27,18 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     Emitter<SignInState> emit,
   ) async {
     emit(state.copyWith(isLoading: true, errorMessage: null));
-    await Future.delayed(const Duration(seconds: 2)); // Placeholder
-    emit(state.copyWith(isLoading: false, isSuccess: true));
+
+    final result = await signInUseCase(
+      SignInParams(
+        emailOrPhone: event.emailOrPhone,
+        password: event.password,
+      ),
+    );
+
+    result.fold(
+      (failure) => emit(state.copyWith(isLoading: false, errorMessage: failure.message)),
+      (user) => emit(state.copyWith(isLoading: false, isSuccess: true)),
+    );
   }
 
   void _onTogglePasswordVisibility(

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/localization/locale_keys.dart';
+import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../core/widgets/input_field.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../core/widgets/sso_button.dart';
@@ -65,12 +67,7 @@ class _SignInViewState extends State<_SignInView> {
           // TODO: Navigate to home
         }
         if (state.errorMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage!),
-              backgroundColor: Colors.red.shade800,
-            ),
-          );
+          AppSnackBar.showError(context, state.errorMessage!);
         }
       },
       builder: (context, state) {
@@ -79,7 +76,10 @@ class _SignInViewState extends State<_SignInView> {
           body: SafeArea(
             child: Center(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 16,
+                ),
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 420),
                   child: Column(
@@ -118,9 +118,9 @@ class _SignInViewState extends State<_SignInView> {
                         textInputAction: TextInputAction.done,
                         suffixIcon: IconButton(
                           onPressed: () {
-                            context
-                                .read<SignInBloc>()
-                                .add(const TogglePasswordVisibility());
+                            context.read<SignInBloc>().add(
+                              const TogglePasswordVisibility(),
+                            );
                           },
                           icon: Icon(
                             state.isPasswordVisible
@@ -136,10 +136,15 @@ class _SignInViewState extends State<_SignInView> {
                       // ── Forgot Password ──
                       Align(
                         alignment: AlignmentDirectional.centerEnd,
-                        child: GestureDetector(
-                          onTap: () {
-                            // TODO: Navigate to forgot password
+                        child: TextButton(
+                          onPressed: () {
+                            context.push('/forgot-password');
                           },
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: const Size(0, 0),
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
                           child: Text(
                             LocaleKeys.forgotPassword.tr(),
                             style: const TextStyle(
@@ -158,11 +163,11 @@ class _SignInViewState extends State<_SignInView> {
                         isLoading: state.isLoading,
                         onPressed: () {
                           context.read<SignInBloc>().add(
-                                SignInSubmitted(
-                                  emailOrPhone: _emailController.text.trim(),
-                                  password: _passwordController.text,
-                                ),
-                              );
+                            SignInSubmitted(
+                              emailOrPhone: _emailController.text.trim(),
+                              password: _passwordController.text,
+                            ),
+                          );
                         },
                       ),
                       const SizedBox(height: 24),
@@ -176,15 +181,23 @@ class _SignInViewState extends State<_SignInView> {
                         icon: _googleIcon(),
                         label: LocaleKeys.continueWithGoogle.tr(),
                         onPressed: () {
-                          context.read<SignInBloc>().add(const SignInWithGoogleSubmitted());
+                          context.read<SignInBloc>().add(
+                            const SignInWithGoogleSubmitted(),
+                          );
                         },
                       ),
                       const SizedBox(height: 12),
                       SsoButton(
-                        icon: const Icon(Icons.apple, color: AppColors.white, size: 24),
+                        icon: const Icon(
+                          Icons.apple,
+                          color: AppColors.white,
+                          size: 24,
+                        ),
                         label: LocaleKeys.continueWithApple.tr(),
                         onPressed: () {
-                          context.read<SignInBloc>().add(const SignInWithAppleSubmitted());
+                          context.read<SignInBloc>().add(
+                            const SignInWithAppleSubmitted(),
+                          );
                         },
                       ),
                       const SizedBox(height: 32),
@@ -192,7 +205,7 @@ class _SignInViewState extends State<_SignInView> {
                       // ── Footer: Sign Up Link ──
                       SignInFooter(
                         onSignUpTap: () {
-                          // TODO: Navigate to Sign Up
+                          context.push('/signup');
                         },
                       ),
                       const SizedBox(height: 16),

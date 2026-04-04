@@ -11,6 +11,7 @@ class AppInputField extends StatelessWidget {
     this.keyboardType,
     this.onChanged,
     this.textInputAction,
+    this.validator,
   });
 
   final TextEditingController? controller;
@@ -20,15 +21,17 @@ class AppInputField extends StatelessWidget {
   final TextInputType? keyboardType;
   final ValueChanged<String>? onChanged;
   final TextInputAction? textInputAction;
+  final FormFieldValidator<String>? validator;
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
       onChanged: onChanged,
       textInputAction: textInputAction,
+      validator: validator,
       style: const TextStyle(
         fontSize: 16,
         color: AppColors.white,
@@ -65,6 +68,21 @@ class AppInputField extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           borderSide: const BorderSide(
             color: AppColors.divider,
+            width: 1,
+          ),
+        ),
+        errorStyle: const TextStyle(color: Colors.redAccent),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(
+            color: Colors.redAccent,
+            width: 1,
+          ),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(
+            color: Colors.redAccent,
             width: 1,
           ),
         ),
