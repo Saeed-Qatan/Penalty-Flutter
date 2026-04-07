@@ -3,10 +3,12 @@ import '../../domain/usecases/forgot_password_usecase.dart';
 import 'forgot_password_event.dart';
 import 'forgot_password_state.dart';
 
-class ForgotPasswordBloc extends Bloc<ForgotPasswordEvent, ForgotPasswordState> {
+class ForgotPasswordBloc
+    extends Bloc<ForgotPasswordEvent, ForgotPasswordState> {
   final ForgotPasswordUseCase forgotPasswordUseCase;
 
-  ForgotPasswordBloc({required this.forgotPasswordUseCase}) : super(const ForgotPasswordState()) {
+  ForgotPasswordBloc({required this.forgotPasswordUseCase})
+    : super(const ForgotPasswordState()) {
     on<ForgotPasswordSubmitted>(_onForgotPasswordSubmitted);
   }
 
@@ -21,7 +23,8 @@ class ForgotPasswordBloc extends Bloc<ForgotPasswordEvent, ForgotPasswordState> 
     );
 
     result.fold(
-      (failure) => emit(state.copyWith(isLoading: false, errorMessage: failure.message)),
+      (failure) =>
+          emit(state.copyWith(isLoading: false, errorMessage: failure.message)),
       (_) => emit(state.copyWith(isLoading: false, isSuccess: true)),
     );
   }

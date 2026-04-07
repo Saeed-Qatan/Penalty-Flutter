@@ -56,7 +56,7 @@ class PasswordStrengthIndicator extends StatelessWidget {
                     color: color,
                     borderRadius: BorderRadius.circular(4),
                     boxShadow: [
-                      BoxShadow(color: color.withOpacity(0.6), blurRadius: 8),
+                      BoxShadow(color: color.withValues(alpha: 0.6), blurRadius: 8),
                     ],
                   ),
                 ),

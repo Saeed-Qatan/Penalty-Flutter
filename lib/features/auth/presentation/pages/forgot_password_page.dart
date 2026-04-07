@@ -62,8 +62,11 @@ class _ForgotPasswordViewState extends State<_ForgotPasswordView> {
           AppSnackBar.showError(context, state.errorMessage!);
         }
         if (state.isSuccess) {
-          AppSnackBar.showSuccess(context, LocaleKeys.passwordRecoverySent.tr());
-          context.pop();
+          AppSnackBar.showSuccess(
+            context,
+            LocaleKeys.passwordRecoverySent.tr(),
+          );
+          context.push('/verify-otp', extra: _emailOrPhoneController.text);
         }
       },
       builder: (context, state) {
@@ -190,4 +193,3 @@ class _ForgotPasswordViewState extends State<_ForgotPasswordView> {
     );
   }
 }
-

@@ -99,7 +99,7 @@ class _SignUpViewState extends State<_SignUpView> {
         return Scaffold(
           backgroundColor: AppColors.background,
           appBar: AppBar(
-            backgroundColor: AppColors.background.withOpacity(0.9),
+            backgroundColor: AppColors.background.withValues(alpha: 0.9),
             elevation: 0,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back, color: AppColors.white),

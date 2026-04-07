@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/localization/locale_keys.dart';
 import '../widgets/animated_loading_bar.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -89,9 +90,9 @@ class _SplashPageState extends State<SplashPage> {
                       fontWeight: FontWeight.w400,
                       color: AppColors.white.withValues(alpha: 0.6),
                     ),
-                  ),
+                  ).animate().fadeIn(delay: 600.ms, duration: 500.ms).slideY(begin: 0.2, end: 0),
                 ],
-              ),
+              ).animate().fadeIn(duration: 500.ms).scaleXY(begin: 0.9, end: 1.0, curve: Curves.easeOutBack),
 
               // Bottom Loader
               Padding(

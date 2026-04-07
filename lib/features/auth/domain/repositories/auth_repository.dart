@@ -20,6 +20,11 @@ abstract class AuthRepository {
 
   Future<Either<Failure, void>> forgotPassword(String emailOrPhone);
 
+  Future<Either<Failure, void>> verifyOtp({
+    required String emailOrPhone,
+    required String code,
+  });
+
   Future<Either<Failure, SocialAuthUser>> signInWithGoogle();
   Future<Either<Failure, SocialAuthUser>> signInWithApple();
 }

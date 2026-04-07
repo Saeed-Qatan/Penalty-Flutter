@@ -32,10 +32,7 @@ class AppInputField extends StatelessWidget {
       onChanged: onChanged,
       textInputAction: textInputAction,
       validator: validator,
-      style: const TextStyle(
-        fontSize: 16,
-        color: AppColors.white,
-      ),
+      style: const TextStyle(fontSize: 16, color: AppColors.white),
       cursorColor: AppColors.neonGreen,
       decoration: InputDecoration(
         hintText: hintText,
@@ -52,39 +49,24 @@ class AppInputField extends StatelessWidget {
         suffixIcon: suffixIcon,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(
-            color: AppColors.divider,
-            width: 1,
-          ),
+          borderSide: const BorderSide(color: AppColors.divider, width: 1),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(
-            color: AppColors.neonGreen,
-            width: 1,
-          ),
+          borderSide: const BorderSide(color: AppColors.neonGreen, width: 1),
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(
-            color: AppColors.divider,
-            width: 1,
-          ),
+          borderSide: const BorderSide(color: AppColors.divider, width: 1),
         ),
         errorStyle: const TextStyle(color: Colors.redAccent),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(
-            color: Colors.redAccent,
-            width: 1,
-          ),
+          borderSide: const BorderSide(color: Colors.redAccent, width: 1),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(
-            color: Colors.redAccent,
-            width: 1,
-          ),
+          borderSide: const BorderSide(color: Colors.redAccent, width: 1),
         ),
       ),
     );

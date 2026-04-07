@@ -42,6 +42,13 @@
   "sendCode": "إرسال الرمز",
   "fieldRequired": "هذا الحقل مطلوب",
   "invalidEmailOrPhone": "يرجى إدخال بريد إلكتروني أو رقم هاتف صحيح",
-  "passwordRecoverySent": "تم إرسال رمز استعادة كلمة المرور!",
-  "rememberPasswordSignIn": "هل تتذكر كلمة المرور؟ تسجيل الدخول"
+  "rememberPasswordSignIn": "هل تتذكر كلمة المرور؟ تسجيل الدخول",
+  "confirmCode": "تأكيد الرمز",
+  "enterCode": "أدخل الرمز",
+  "codeSentTo": "تم إرسال رمز التأكيد إلى",
+  "resendIn": "إعادة الإرسال خلال",
+  "confirm": "تأكيد",
+  "accountCreatedSuccessTitle": "تم إنشاء الحساب بنجاح!",
+  "accountCreatedSuccessSubtitle": "مرحباً بك في بلينتي، يمكنك الآن البدء في حجز ملاعبك المفضلة.",
+  "startNow": "ابدأ الآن"
 }

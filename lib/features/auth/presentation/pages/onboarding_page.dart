@@ -4,26 +4,58 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/localization/locale_keys.dart';
 import '../widgets/pulsing_icon.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
-class OnboardingPage extends StatelessWidget {
+class OnboardingPage extends StatefulWidget {
   const OnboardingPage({super.key});
 
   @override
+  State<OnboardingPage> createState() => _OnboardingPageState();
+}
+
+class _OnboardingPageState extends State<OnboardingPage> {
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // Content data for the 3 pages
+    final pagesData = [
+      {
+        'icon': Icons.search,
+        'title': LocaleKeys.onboardingTitle1.tr(),
+        'subtitle': LocaleKeys.onboardingSubtitle1.tr(),
+      },
+      {
+        'icon': Icons.sports_soccer, // Placeholder icon
+        'title': LocaleKeys.onboardingTitle1.tr(), // Placeholder for now
+        'subtitle': LocaleKeys.onboardingSubtitle1.tr(), // Placeholder for now
+      },
+      {
+        'icon': Icons.star, // Placeholder icon
+        'title': LocaleKeys.onboardingTitle1.tr(), // Placeholder for now
+        'subtitle': LocaleKeys.onboardingSubtitle1.tr(), // Placeholder for now
+      },
+    ];
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: Column(
           children: [
-            // Top: Skip button aligned to the end (right in RTL, left in LTR)
+            // Top: Skip button aligned to the end
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
               child: Align(
                 alignment: AlignmentDirectional.centerStart,
                 child: GestureDetector(
-                  onTap: () {
-                    context.go('/location-permission');
-                  },
+                  onTap: () => context.go('/location-permission'),
                   child: Text(
                     LocaleKeys.skip.tr(),
                     style: const TextStyle(
@@ -36,69 +68,81 @@ class OnboardingPage extends StatelessWidget {
               ),
             ),
 
-            // Center: Icon + Text content
+            // Center: PageView with content
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Pulsing search icon card
-                  const PulsingIcon(
-                    icon: Icons.search,
-                    iconSize: 80,
-                    containerSize: 280,
-                  ),
-                  const SizedBox(height: 40),
-
-                  // Title
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 36),
-                    child: Text(
-                      LocaleKeys.onboardingTitle1.tr(),
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.white,
-                        height: 1.3,
+              child: PageView.builder(
+                controller: _pageController,
+                itemCount: pagesData.length,
+                onPageChanged: (int page) {
+                  setState(() {
+                    _currentPage = page;
+                  });
+                },
+                itemBuilder: (context, index) {
+                  final data = pagesData[index];
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Pulsing search icon card
+                      PulsingIcon(
+                        icon: data['icon'] as IconData,
+                        iconSize: 80,
+                        containerSize: 280,
                       ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
+                      const SizedBox(height: 40),
 
-                  // Subtitle
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 36),
-                    child: Text(
-                      LocaleKeys.onboardingSubtitle1.tr(),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.white.withValues(alpha: 0.6),
-                        height: 1.6,
-                      ),
-                    ),
-                  ),
-                ],
+                      // Title
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 36),
+                        child: Text(
+                          data['title'] as String,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 26,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.white,
+                            height: 1.3,
+                          ),
+                        ),
+                      ).animate(key: ValueKey('title_$index')).fadeIn(duration: 400.ms).slideY(begin: 0.2, end: 0, curve: Curves.easeOut),
+                      const SizedBox(height: 16),
+
+                      // Subtitle
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 36),
+                        child: Text(
+                          data['subtitle'] as String,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.white.withValues(alpha: 0.6),
+                            height: 1.6,
+                          ),
+                        ),
+                      ).animate(key: ValueKey('subtitle_$index')).fadeIn(delay: 200.ms, duration: 400.ms).slideY(begin: 0.2, end: 0, curve: Curves.easeOut),
+                    ],
+                  );
+                },
               ),
             ),
 
-            // Bottom: Dot indicators + Next button
+            // Bottom: Animated Dot indicators + Next button
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 16, 24, 48),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Page indicators — current page is third (index 2)
+                  // Page indicators — moving animated
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildDot(false),
-                      const SizedBox(width: 8),
-                      _buildDot(false),
-                      const SizedBox(width: 8),
-                      _buildActiveDot(),
-                    ],
+                    children: List.generate(
+                      pagesData.length,
+                      (index) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: _buildAnimatedDot(index == _currentPage),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 32),
 
@@ -110,7 +154,14 @@ class OnboardingPage extends StatelessWidget {
                       height: 52,
                       child: ElevatedButton(
                         onPressed: () {
-                          context.go('/location-permission');
+                          if (_currentPage < pagesData.length - 1) {
+                            _pageController.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut,
+                            );
+                          } else {
+                            context.go('/location-permission');
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppColors.neonGreen,
@@ -122,7 +173,7 @@ class OnboardingPage extends StatelessWidget {
                           ),
                         ),
                         child: Text(
-                          LocaleKeys.next.tr(),
+                          LocaleKeys.next.tr(), // Using next logic or get started if last
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
@@ -130,7 +181,7 @@ class OnboardingPage extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ),
+                  ).animate().fadeIn(delay: 500.ms, duration: 400.ms).slideX(begin: 0.2, end: 0, curve: Curves.easeOutBack),
                 ],
               ),
             ),
@@ -140,24 +191,16 @@ class OnboardingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildDot(bool isActive) {
-    return Container(
-      width: 6,
-      height: 6,
+  // Dynamic Animated Dot!
+  Widget _buildAnimatedDot(bool isActive) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOutCubic,
+      width: isActive ? 32 : 6,
+      height: isActive ? 8 : 6,
       decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: AppColors.white.withValues(alpha: 0.3),
-      ),
-    );
-  }
-
-  Widget _buildActiveDot() {
-    return Container(
-      width: 32,
-      height: 8,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(4),
-        color: AppColors.neonGreen,
+        color: isActive ? AppColors.neonGreen : AppColors.white.withValues(alpha: 0.3),
+        borderRadius: BorderRadius.circular(isActive ? 4 : 3),
       ),
     );
   }

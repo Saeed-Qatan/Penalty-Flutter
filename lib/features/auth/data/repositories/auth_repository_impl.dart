@@ -68,6 +68,21 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<Either<Failure, void>> verifyOtp({
+    required String emailOrPhone,
+    required String code,
+  }) async {
+    try {
+      await remoteDataSource.verifyOtp(emailOrPhone: emailOrPhone, code: code);
+      return const Right(null);
+    } on AppException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
   Future<Either<Failure, SocialAuthUser>> signInWithGoogle() async {
     try {
       final userModel = await remoteDataSource.signInWithGoogle();

@@ -42,6 +42,13 @@
   "sendCode": "Send Code",
   "fieldRequired": "This field is required",
   "invalidEmailOrPhone": "Please enter a valid email or phone number",
-  "passwordRecoverySent": "Password recovery code sent!",
-  "rememberPasswordSignIn": "Remember your password? Sign In"
+  "rememberPasswordSignIn": "Remember your password? Sign In",
+  "confirmCode": "Confirm Code",
+  "enterCode": "Enter the code",
+  "codeSentTo": "Verification code has been sent to",
+  "resendIn": "Resend in",
+  "confirm": "Confirm",
+  "accountCreatedSuccessTitle": "Account Created Successfully!",
+  "accountCreatedSuccessSubtitle": "Welcome to Plenty, you can now start booking your favorite pitches.",
+  "startNow": "Start Now"
 }
