@@ -50,5 +50,11 @@
   "confirm": "Confirm",
   "accountCreatedSuccessTitle": "Account Created Successfully!",
   "accountCreatedSuccessSubtitle": "Welcome to Plenty, you can now start booking your favorite pitches.",
-  "startNow": "Start Now"
+  "startNow": "Start Now",
+  "resetPasswordTitle": "Reset Password",
+  "resetPasswordSubtitle": "Create a new strong password for your account.",
+  "newPassword": "New Password",
+  "confirmNewPassword": "Confirm New Password",
+  "resetPassword": "Reset Password",
+  "passwordResetSuccess": "Password reset successfully!"
 }

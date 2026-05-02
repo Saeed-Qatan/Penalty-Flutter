@@ -11,6 +11,7 @@ import '../../../../core/localization/locale_keys.dart';
 import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../injection_container.dart';
+import '../../../auth/domain/entities/otp_purpose.dart';
 import '../bloc/verify_otp/verify_otp_bloc.dart';
 import '../bloc/verify_otp/verify_otp_event.dart';
 import '../bloc/verify_otp/verify_otp_state.dart';
@@ -18,25 +19,34 @@ import '../widgets/custom_numeric_keypad.dart';
 
 class OtpVerificationPage extends StatelessWidget {
   final String emailOrPhone;
+  final OtpPurpose purpose;
 
   const OtpVerificationPage({
     super.key,
     required this.emailOrPhone,
+    required this.purpose,
   });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<VerifyOtpBloc>(),
-      child: _OtpVerificationView(emailOrPhone: emailOrPhone),
+      child: _OtpVerificationView(
+        emailOrPhone: emailOrPhone,
+        purpose: purpose,
+      ),
     );
   }
 }
 
 class _OtpVerificationView extends StatefulWidget {
   final String emailOrPhone;
+  final OtpPurpose purpose;
 
-  const _OtpVerificationView({required this.emailOrPhone});
+  const _OtpVerificationView({
+    required this.emailOrPhone,
+    required this.purpose,
+  });
 
   @override
   State<_OtpVerificationView> createState() => _OtpVerificationViewState();
@@ -76,7 +86,7 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
   }
 
   void _onDigitPressed(String digit) {
-    if (_otpController.text.length < 6) {
+    if (_otpController.text.length < 8) {
       _otpController.text = _otpController.text + digit;
     }
   }
@@ -92,7 +102,7 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
     final isRtl = context.locale.languageCode == 'ar';
     
     final defaultPinTheme = PinTheme(
-      width: isRtl ? 56 : 56, // matching sm:w-14
+      width: 40, // Reduced from 56 to fit 8 digits on mobile screens
       height: 64, // matching sm:h-16
       textStyle: const TextStyle(
         fontSize: 24,
@@ -141,10 +151,16 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
         if (state.isSuccess) {
           AppSnackBar.showSuccess(
             context,
-            'Verified successfully', // Custom success logic or navigation
+            'Verified successfully',
           );
-          // Navigate to Home or specific page based on app flow
-          context.go('/');
+          // Navigate based on flow purpose
+          if (widget.purpose == OtpPurpose.signup) {
+            // Sign up: show success screen
+            context.go('/account-created-success');
+          } else {
+            // Recovery: OTP verified → go directly to home
+            context.go('/home');
+          }
         }
         if (state.resendSuccess) {
           AppSnackBar.showSuccess(
@@ -272,7 +288,7 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
                                 // Ignoring pointer to avoid showing native keyboard
                                 ignoring: true,
                                 child: Pinput(
-                                  length: 6,
+                                  length: 8,
                                   controller: _otpController,
                                   focusNode: _otpFocusNode,
                                   defaultPinTheme: defaultPinTheme,
@@ -342,6 +358,7 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
                                             context.read<VerifyOtpBloc>().add(
                                               ResendOtpRequested(
                                                 emailOrPhone: widget.emailOrPhone,
+                                                purpose: widget.purpose,
                                               ),
                                             );
                                           },
@@ -369,16 +386,17 @@ class _OtpVerificationViewState extends State<_OtpVerificationView> {
                               text: LocaleKeys.confirm.tr(),
                               isLoading: state.isLoading,
                               onPressed: () {
-                                if (_otpController.text.length == 6) {
+                                if (_otpController.text.length == 8) {
                                   context.read<VerifyOtpBloc>().add(
                                     VerifyOtpSubmitted(
                                       emailOrPhone: widget.emailOrPhone,
                                       code: _otpController.text,
+                                      purpose: widget.purpose,
                                     ),
                                   );
                                 } else {
-                                  // Optionally show error that 6 digits are required
-                                  AppSnackBar.showError(context, 'Please enter a 6-digit code');
+                                  // Optionally show error that 8 digits are required
+                                  AppSnackBar.showError(context, 'Please enter an 8-digit code');
                                 }
                               },
                             ).animate().fadeIn(delay: 400.ms, duration: 400.ms).slideY(begin: 0.2, end: 0, curve: Curves.easeOutQuad),

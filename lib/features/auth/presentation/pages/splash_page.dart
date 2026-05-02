@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/localization/locale_keys.dart';
 import '../widgets/animated_loading_bar.dart';
@@ -17,8 +19,28 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
-      if (mounted) {
+    Future.delayed(const Duration(seconds: 3), () async {
+      if (!mounted) return;
+
+      final session = Supabase.instance.client.auth.currentSession;
+
+      // ─── مستخدم مسجّل دخول ───────────────────────────────
+      if (session != null) {
+        context.go('/home');
+        return;
+      }
+
+      // ─── فحص "أول مرة" عبر SharedPreferences ────────────
+      final prefs = await SharedPreferences.getInstance();
+      final hasSeenOnboarding = prefs.getBool('has_seen_onboarding') ?? false;
+
+      if (!mounted) return;
+
+      if (hasSeenOnboarding) {
+        // مستخدم عائد — تجاهل الـ Onboarding وادخل مباشرةً للـ Login
+        context.go('/login');
+      } else {
+        // أول مرة — أظهر الـ Onboarding
         context.go('/onboarding');
       }
     });

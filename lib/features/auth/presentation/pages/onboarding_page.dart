@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/localization/locale_keys.dart';
 import '../widgets/pulsing_icon.dart';
@@ -16,6 +17,13 @@ class OnboardingPage extends StatefulWidget {
 class _OnboardingPageState extends State<OnboardingPage> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
+
+  /// تخزن علم "رأى الـ Onboarding" ثم تنتقل للصفحة التالية
+  Future<void> _completeOnboarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('has_seen_onboarding', true);
+    if (mounted) context.go('/location-permission');
+  }
 
   @override
   void dispose() {
@@ -55,7 +63,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
               child: Align(
                 alignment: AlignmentDirectional.centerStart,
                 child: GestureDetector(
-                  onTap: () => context.go('/location-permission'),
+                  onTap: _completeOnboarding,
                   child: Text(
                     LocaleKeys.skip.tr(),
                     style: const TextStyle(
@@ -160,7 +168,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                               curve: Curves.easeInOut,
                             );
                           } else {
-                            context.go('/location-permission');
+                            _completeOnboarding();
                           }
                         },
                         style: ElevatedButton.styleFrom(

@@ -56,4 +56,12 @@ class LocaleKeys {
   static const accountCreatedSuccessTitle = 'accountCreatedSuccessTitle';
   static const accountCreatedSuccessSubtitle = 'accountCreatedSuccessSubtitle';
   static const startNow = 'startNow';
+
+  // Reset Password
+  static const resetPasswordTitle = 'resetPasswordTitle';
+  static const resetPasswordSubtitle = 'resetPasswordSubtitle';
+  static const newPassword = 'newPassword';
+  static const confirmNewPassword = 'confirmNewPassword';
+  static const resetPassword = 'resetPassword';
+  static const passwordResetSuccess = 'passwordResetSuccess';
 }

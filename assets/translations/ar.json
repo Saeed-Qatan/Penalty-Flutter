@@ -50,5 +50,11 @@
   "confirm": "تأكيد",
   "accountCreatedSuccessTitle": "تم إنشاء الحساب بنجاح!",
   "accountCreatedSuccessSubtitle": "مرحباً بك في بلينتي، يمكنك الآن البدء في حجز ملاعبك المفضلة.",
-  "startNow": "ابدأ الآن"
+  "startNow": "ابدأ الآن",
+  "resetPasswordTitle": "إعادة تعيين كلمة المرور",
+  "resetPasswordSubtitle": "أنشئ كلمة مرور جديدة وقوية لحسابك.",
+  "newPassword": "كلمة المرور الجديدة",
+  "confirmNewPassword": "تأكيد كلمة المرور الجديدة",
+  "resetPassword": "إعادة تعيين كلمة المرور",
+  "passwordResetSuccess": "تم إعادة تعيين كلمة المرور بنجاح!"
 }

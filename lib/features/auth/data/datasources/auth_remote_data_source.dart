@@ -1,7 +1,9 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart' as google_auth;
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../../core/errors/app_exception.dart';
+import '../../domain/entities/otp_purpose.dart';
 import '../models/social_auth_user_model.dart';
 import '../models/user_model.dart';
 
@@ -26,7 +28,15 @@ abstract class AuthRemoteDataSource {
   Future<void> verifyOtp({
     required String emailOrPhone,
     required String code,
+    required OtpPurpose purpose,
   });
+
+  Future<void> resendOtp({
+    required String emailOrPhone,
+    required OtpPurpose purpose,
+  });
+
+  Future<void> resetPassword({required String newPassword});
 
   Future<SocialAuthUserModel> signInWithGoogle();
   Future<SocialAuthUserModel> signInWithApple();
@@ -74,6 +84,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } on AuthException catch (e) {
       throw AppException(message: e.message);
     } catch (e) {
+      if (e is AppException) rethrow;
       throw AppException(message: e.toString());
     }
   }
@@ -117,6 +128,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } on AuthException catch (e) {
       throw AppException(message: e.message);
     } catch (e) {
+      if (e is AppException) rethrow;
       throw AppException(message: e.toString());
     }
   }
@@ -125,14 +137,20 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<void> forgotPassword(String emailOrPhone) async {
     try {
       final isEmail = emailOrPhone.contains('@');
+      final redirectUrl = dotenv.env['RESET_PASSWORD_REDIRECT_URL'];
+
       if (isEmail) {
-        await supabaseClient.auth.resetPasswordForEmail(emailOrPhone);
+        await supabaseClient.auth.resetPasswordForEmail(
+          emailOrPhone,
+          redirectTo: redirectUrl,
+        );
       } else {
         await supabaseClient.auth.signInWithOtp(phone: emailOrPhone);
       }
     } on AuthException catch (e) {
       throw AppException(message: e.message);
     } catch (e) {
+      if (e is AppException) rethrow;
       throw AppException(message: e.toString());
     }
   }
@@ -141,11 +159,22 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   Future<void> verifyOtp({
     required String emailOrPhone,
     required String code,
+    required OtpPurpose purpose,
   }) async {
     try {
       final isEmail = emailOrPhone.contains('@');
+
+      // Determine the correct OtpType based on flow purpose
+      final OtpType otpType;
+      if (purpose == OtpPurpose.signup) {
+        otpType = isEmail ? OtpType.signup : OtpType.sms;
+      } else {
+        // recovery
+        otpType = isEmail ? OtpType.recovery : OtpType.sms;
+      }
+
       final AuthResponse response = await supabaseClient.auth.verifyOTP(
-        type: isEmail ? OtpType.email : OtpType.sms,
+        type: otpType,
         token: code,
         email: isEmail ? emailOrPhone : null,
         phone: !isEmail ? emailOrPhone : null,
@@ -157,6 +186,58 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     } on AuthException catch (e) {
       throw AppException(message: e.message);
     } catch (e) {
+      if (e is AppException) rethrow;
+      throw AppException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<void> resendOtp({
+    required String emailOrPhone,
+    required OtpPurpose purpose,
+  }) async {
+    try {
+      final isEmail = emailOrPhone.contains('@');
+
+      if (purpose == OtpPurpose.signup) {
+        // Resend signup confirmation OTP
+        if (isEmail) {
+          await supabaseClient.auth.resend(
+            type: OtpType.signup,
+            email: emailOrPhone,
+          );
+        } else {
+          await supabaseClient.auth.resend(
+            type: OtpType.sms,
+            phone: emailOrPhone,
+          );
+        }
+      } else {
+        // Recovery — re-trigger the reset password flow
+        if (isEmail) {
+          await supabaseClient.auth.resetPasswordForEmail(emailOrPhone);
+        } else {
+          await supabaseClient.auth.signInWithOtp(phone: emailOrPhone);
+        }
+      }
+    } on AuthException catch (e) {
+      throw AppException(message: e.message);
+    } catch (e) {
+      if (e is AppException) rethrow;
+      throw AppException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<void> resetPassword({required String newPassword}) async {
+    try {
+      await supabaseClient.auth.updateUser(
+        UserAttributes(password: newPassword),
+      );
+    } on AuthException catch (e) {
+      throw AppException(message: e.message);
+    } catch (e) {
+      if (e is AppException) rethrow;
       throw AppException(message: e.toString());
     }
   }

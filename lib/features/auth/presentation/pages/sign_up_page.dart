@@ -8,6 +8,7 @@ import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../core/widgets/input_field.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../injection_container.dart';
+import '../../domain/entities/otp_purpose.dart';
 import '../bloc/sign_up_bloc.dart';
 import '../bloc/sign_up_event.dart';
 import '../bloc/sign_up_state.dart';
@@ -89,7 +90,10 @@ class _SignUpViewState extends State<_SignUpView> {
     return BlocConsumer<SignUpBloc, SignUpState>(
       listener: (context, state) {
         if (state.isSuccess) {
-          context.go('/location-permission');
+          context.push('/verify-otp', extra: {
+            'emailOrPhone': _emailController.text.trim(),
+            'purpose': OtpPurpose.signup,
+          });
         }
         if (state.errorMessage != null && state.errorMessage!.isNotEmpty) {
           AppSnackBar.showError(context, state.errorMessage!);

@@ -64,7 +64,7 @@ class _SignInViewState extends State<_SignInView> {
     return BlocConsumer<SignInBloc, SignInState>(
       listener: (context, state) {
         if (state.isSuccess) {
-          // TODO: Navigate to home
+          context.go('/home');
         }
         if (state.errorMessage != null) {
           AppSnackBar.showError(context, state.errorMessage!);

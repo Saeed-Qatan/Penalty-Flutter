@@ -112,8 +112,8 @@ class AccountCreatedSuccessPage extends StatelessWidget {
                 height: 56,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Navigate to home or main app shell!
-                    context.go('/');
+                    // Navigate to home after successful account creation
+                    context.go('/home');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.neonGreen,

@@ -7,7 +7,10 @@ import 'features/auth/domain/usecases/sign_in_with_apple_usecase.dart';
 import 'features/auth/domain/usecases/sign_in_usecase.dart';
 import 'features/auth/domain/usecases/sign_up_usecase.dart';
 import 'features/auth/domain/usecases/forgot_password_usecase.dart';
+import 'features/auth/domain/usecases/resend_otp_usecase.dart';
+import 'features/auth/domain/usecases/reset_password_usecase.dart';
 import 'features/auth/presentation/bloc/forgot_password_bloc.dart';
+import 'features/auth/presentation/bloc/reset_password/reset_password_bloc.dart';
 import 'features/auth/presentation/bloc/sign_in_bloc.dart';
 import 'features/auth/presentation/bloc/sign_up_bloc.dart';
 import 'features/auth/presentation/bloc/verify_otp/verify_otp_bloc.dart';
@@ -21,6 +24,12 @@ import 'features/location/domain/usecases/get_current_location_usecase.dart';
 import 'features/location/presentation/bloc/location_bloc.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'features/home/data/datasources/home_remote_data_source.dart';
+import 'features/home/data/repositories/home_repository_impl.dart';
+import 'features/home/domain/repositories/home_repository.dart';
+import 'features/home/domain/usecases/get_home_data.dart';
+import 'features/home/presentation/bloc/home_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -66,15 +75,18 @@ Future<void> initDependencies() async {
   sl.registerFactory(
     () => VerifyOtpBloc(
       verifyOtpUseCase: sl(),
-      forgotPasswordUseCase: sl(),
+      resendOtpUseCase: sl(),
     ),
   );
+  sl.registerFactory(() => ResetPasswordBloc(resetPasswordUseCase: sl()));
 
   // Use Cases
   sl.registerLazySingleton(() => SignInUseCase(sl()));
   sl.registerLazySingleton(() => SignUpUseCase(sl()));
   sl.registerLazySingleton(() => ForgotPasswordUseCase(sl()));
   sl.registerLazySingleton(() => VerifyOtpUseCase(sl()));
+  sl.registerLazySingleton(() => ResendOtpUseCase(sl()));
+  sl.registerLazySingleton(() => ResetPasswordUseCase(sl()));
   sl.registerLazySingleton(() => SignInWithGoogleUseCase(sl()));
   sl.registerLazySingleton(() => SignInWithAppleUseCase(sl()));
 
@@ -90,4 +102,25 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<AuthRemoteDataSource>(
     () => AuthRemoteDataSourceImpl(supabaseClient: sl()),
   );
+
+  // ── Home Feature ──
+
+  // BLoC
+  sl.registerFactory(() => HomeBloc(getHomeData: sl()));
+
+  // Use Cases
+  sl.registerLazySingleton(() => GetHomeDataUseCase(sl()));
+
+  // Repository
+  sl.registerLazySingleton<HomeRepository>(
+    () => HomeRepositoryImpl(
+      remoteDataSource: sl(),
+    ),
+  );
+
+  // Data Sources
+  sl.registerLazySingleton<HomeRemoteDataSource>(
+    () => HomeRemoteDataSourceImpl(),
+  );
 }
+

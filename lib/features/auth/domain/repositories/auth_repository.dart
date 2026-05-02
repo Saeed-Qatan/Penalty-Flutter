@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import '../../../../core/errors/failure.dart';
+import '../entities/otp_purpose.dart';
 import '../entities/social_auth_user.dart';
 import '../entities/user.dart';
 
@@ -23,7 +24,15 @@ abstract class AuthRepository {
   Future<Either<Failure, void>> verifyOtp({
     required String emailOrPhone,
     required String code,
+    required OtpPurpose purpose,
   });
+
+  Future<Either<Failure, void>> resendOtp({
+    required String emailOrPhone,
+    required OtpPurpose purpose,
+  });
+
+  Future<Either<Failure, void>> resetPassword({required String newPassword});
 
   Future<Either<Failure, SocialAuthUser>> signInWithGoogle();
   Future<Either<Failure, SocialAuthUser>> signInWithApple();

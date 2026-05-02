@@ -8,6 +8,7 @@ import '../../../../core/widgets/app_snackbar.dart';
 import '../../../../core/widgets/input_field.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../../../../injection_container.dart';
+import '../../domain/entities/otp_purpose.dart';
 import '../bloc/forgot_password_bloc.dart';
 import '../bloc/forgot_password_event.dart';
 import '../bloc/forgot_password_state.dart';
@@ -66,7 +67,14 @@ class _ForgotPasswordViewState extends State<_ForgotPasswordView> {
             context,
             LocaleKeys.passwordRecoverySent.tr(),
           );
-          context.push('/verify-otp', extra: _emailOrPhoneController.text);
+          // Navigate to OTP verification screen
+          context.push(
+            '/verify-otp',
+            extra: {
+              'emailOrPhone': _emailOrPhoneController.text.trim(),
+              'purpose': OtpPurpose.recovery,
+            },
+          );
         }
       },
       builder: (context, state) {

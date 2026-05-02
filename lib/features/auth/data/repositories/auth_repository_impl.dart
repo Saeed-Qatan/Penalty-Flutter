@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/errors/failure.dart';
+import '../../domain/entities/otp_purpose.dart';
 import '../../domain/entities/social_auth_user.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/auth_repository.dart';
@@ -71,9 +72,44 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, void>> verifyOtp({
     required String emailOrPhone,
     required String code,
+    required OtpPurpose purpose,
   }) async {
     try {
-      await remoteDataSource.verifyOtp(emailOrPhone: emailOrPhone, code: code);
+      await remoteDataSource.verifyOtp(
+        emailOrPhone: emailOrPhone,
+        code: code,
+        purpose: purpose,
+      );
+      return const Right(null);
+    } on AppException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> resendOtp({
+    required String emailOrPhone,
+    required OtpPurpose purpose,
+  }) async {
+    try {
+      await remoteDataSource.resendOtp(
+        emailOrPhone: emailOrPhone,
+        purpose: purpose,
+      );
+      return const Right(null);
+    } on AppException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> resetPassword({required String newPassword}) async {
+    try {
+      await remoteDataSource.resetPassword(newPassword: newPassword);
       return const Right(null);
     } on AppException catch (e) {
       return Left(ServerFailure(e.message));

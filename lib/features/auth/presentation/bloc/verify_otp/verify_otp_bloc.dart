@@ -1,16 +1,16 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../domain/usecases/forgot_password_usecase.dart';
+import '../../../domain/usecases/resend_otp_usecase.dart';
 import '../../../domain/usecases/verify_otp_usecase.dart';
 import 'verify_otp_event.dart';
 import 'verify_otp_state.dart';
 
 class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
   final VerifyOtpUseCase verifyOtpUseCase;
-  final ForgotPasswordUseCase forgotPasswordUseCase;
+  final ResendOtpUseCase resendOtpUseCase;
 
   VerifyOtpBloc({
     required this.verifyOtpUseCase,
-    required this.forgotPasswordUseCase,
+    required this.resendOtpUseCase,
   }) : super(const VerifyOtpState()) {
     on<VerifyOtpSubmitted>(_onVerifyOtpSubmitted);
     on<ResendOtpRequested>(_onResendOtpRequested);
@@ -26,6 +26,7 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
       VerifyOtpParams(
         emailOrPhone: event.emailOrPhone,
         code: event.code,
+        purpose: event.purpose,
       ),
     );
 
@@ -47,8 +48,11 @@ class VerifyOtpBloc extends Bloc<VerifyOtpEvent, VerifyOtpState> {
   ) async {
     emit(state.clearError().copyWith(resendLoading: true, resendSuccess: false));
 
-    final result = await forgotPasswordUseCase(
-      ForgotPasswordParams(emailOrPhone: event.emailOrPhone),
+    final result = await resendOtpUseCase(
+      ResendOtpParams(
+        emailOrPhone: event.emailOrPhone,
+        purpose: event.purpose,
+      ),
     );
 
     result.fold(
